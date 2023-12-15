@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: api-gateway  #服务名
+  cloud:
+    nacos:
+      config:
+        # 配置中心地址
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        # 配置中心配置文件的后缀名格式
+        file-extension: yaml
+        # 是否动态刷新，默认为false
+        refresh: true
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true  #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务
+          lower-case-service-id: true  #是将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了
+#      routes:
+#        -id: mcroservice-payment  #自定义id,无意义但不能重复，最好跟服务名保持一致
+#        uri: lb://mcroservice-payment  # 注册中心中的服务器名称
+#        predicates:
+#          - Path=/payment/** # 转发该路径
+#        filters:
+#          - StripPrefix=1 #必须加上StripPrefix=1，否则访问服务时会带上user
+      # 经过gateWay网关时，需要在网关统一配置跨域请求，全部通过
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            allowed-methods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+  # 当前环境对应的profile
+  profiles:
+    active: dev
