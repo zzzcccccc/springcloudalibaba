@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: api-auth-resource  #服务名
+  cloud:
+    nacos:
+      config:
+        # 配置中心地址
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        # 配置中心配置文件的后缀名格式
+        file-extension: yaml
+        # 是否动态刷新，默认为false
+        refresh: true
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      discovery:
+        server-addr: localhost:8848
+  # 当前环境对应的profile
+  profiles:
+    active: dev
