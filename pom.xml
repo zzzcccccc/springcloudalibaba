@@ -17,6 +17,8 @@
         <module>cloud-api-gateway</module>
         <module>cloud-consumer-order-api</module>
         <module>cloud-provide-payment-api</module>
+        <module>cloud-api-auth</module>
+        <module>cloud-api-auth-resource</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,9 +1,10 @@
 package com.cloud.order;
 
-import com.cloud.payment.fegin.FeginPaymentClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringCloudApplication
@@ -14,4 +15,8 @@ public class CloudConsumerOrderApplication {
         SpringApplication.run(CloudConsumerOrderApplication.class,args);
     }
 
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
 }
