@@ -1,6 +1,5 @@
 package com.cloud.payment.controller;
 
-import com.api.commons.pojo.CommonResult;
 import com.cloud.order.fegin.FeginOrderClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

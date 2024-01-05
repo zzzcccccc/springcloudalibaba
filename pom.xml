@@ -11,7 +11,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-api-commons</module>
         <module>cloud-provide-payment</module>
         <module>cloud-consumer-order</module>
         <module>cloud-api-gateway</module>
@@ -19,6 +18,9 @@
         <module>cloud-provide-payment-api</module>
         <module>cloud-api-auth</module>
         <module>cloud-api-auth-resource</module>
+        <module>cloud-upms-api</module>
+        <module>cloud-upms-biz</module>
+        <module>cloud-commons</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,7 +29,7 @@
         <druid.version>1.1.10</druid.version>
         <mysql.version>8.0.19</mysql.version>
         <junit.version>4.1.2</junit.version>
-        <lombok.version>1.16.10</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
         <log4j.vsrsion>1.2.17</log4j.vsrsion>
         <!-- 与Springboot2.1.x兼容(这个版本以上集成gateway有问题，目前没解决，所有退回来了哈哈) -->
 <!--        <spring-cloud.version>Greenwich.SR6</spring-cloud.version>-->

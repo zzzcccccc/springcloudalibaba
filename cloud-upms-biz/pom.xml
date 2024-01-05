@@ -1,55 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>cloud-api-auth</artifactId>
+
+    <artifactId>cloud-upms-biz</artifactId>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>cloud-common-swagger</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>cloud-upms-api</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-
-        <!--redis依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <!--fastjson依赖-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.33</version>
-        </dependency>
-        <!--jwt依赖-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.0</version>
-        </dependency>
-        <!-- security-oauth2       -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>cloud-api-auth</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
         <!--  nacos服务配置发现      -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -60,10 +34,16 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-        <!--hystrix-->
+        <!--web 模块-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- hystrix-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>${spring-cloud-alibaba.version}</version>
         </dependency>
         <!--mybatis-plus-->
         <dependency>
