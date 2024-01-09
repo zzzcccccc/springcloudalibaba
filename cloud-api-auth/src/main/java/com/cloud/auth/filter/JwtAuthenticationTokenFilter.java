@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * 过滤器，校验token（不是全局的）
+ * 过滤器，校验token（不是全局的 可以单体项目使用）
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {

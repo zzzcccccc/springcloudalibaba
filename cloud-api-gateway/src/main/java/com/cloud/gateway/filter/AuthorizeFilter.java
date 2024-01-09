@@ -2,6 +2,8 @@ package com.cloud.gateway.filter;
 
 
 import com.api.commons.jwt.JwtUtil;
+import com.api.commons.exception.BizException;
+import com.api.commons.exception.ExceptionEnum;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -10,6 +12,7 @@ import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -34,7 +38,8 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         //2.判断当前的请求是否为登录，如果是，直接放行
-        if(request.getURI().getPath().contains("/auth/login")){
+        if(request.getURI().getPath().contains("/auth/login")||
+           request.getURI().getPath().contains("/v2/api-docs")){
             //放行
             return chain.filter(exchange);
         }
@@ -49,26 +54,40 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 //            response.setStatusCode(HttpStatus.UNAUTHORIZED);
 //            return response.setComplete();
 
-            throw new RuntimeException("用户未登录");
+            // 传递异常信息
+            throw new BizException(403,"用户未登录");
+
         }
 
         // 解析token
         String id;
         try {
             Claims claims = JwtUtil.parseJWT(jwtToken);
+            Date expiration = claims.getExpiration();
+            //和当前时间进行对比来判断是否过期
+            boolean after = new Date(System.currentTimeMillis()).after(expiration);
+            if (after){
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                return response.setComplete();
+                // throw new BizException(503,"token过期");
+
+            }
             id = claims.getSubject();
+            // 从redis中获取用户信息
+            String redisKey = "login:" + id;
+            ValueOperations operation = redisTemplate.opsForValue();
+            Object loginUser =  operation.get(redisKey);
+            if (Objects.isNull(loginUser)) {
+                throw new BizException(ExceptionEnum.SIGNATURE_NOT_MATCH.getResultCode(),
+                        ExceptionEnum.SIGNATURE_NOT_MATCH.getResultMsg());
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("token非法");
+          /*  throw new BizException(ExceptionEnum.SIGNATURE_NOT_MATCH.getResultCode(),
+                    ExceptionEnum.SIGNATURE_NOT_MATCH.getResultMsg());*/
         }
 
-        // 从redis中获取用户信息
-        String redisKey = "login:" + id;
-        ValueOperations operation = redisTemplate.opsForValue();
-        Object loginUser =  operation.get(redisKey);
-        if (Objects.isNull(loginUser)) {
-            throw new RuntimeException("redis-用户未登录");
-        }
+
 
 
        /* try {

@@ -1,8 +1,10 @@
 package com.api.commons.swagger;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -16,50 +18,39 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 import java.util.List;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
-/**
- * @author zhangcc
- * @date 2023-01-09 15:17
- * swagger配置类
- */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+@EnableKnife4j
+public class SwaggerConfiguration {
 
-
-    /**
-     * 文档配置
-     * @return
-     */
-    @Bean
-    public Docket createRestApi() {
+    @Bean(value = "userApi")
+    @Order(value = 1)
+    public Docket groupRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .enable(true)
-                //是否开启 (true 开启  false隐藏。生产环境建议隐藏)
+                .apiInfo(groupApiInfo())
                 .select()
-                //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
+//                .apis(RequestHandlerSelectors.basePackage("org.pearl.app"))
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
-                //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(this.getParameterList());// 全局配置
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo groupApiInfo() {
         return new ApiInfoBuilder()
-                //设置文档标题(API名称)
-                .title("SpringBoot中使用Swagger2接口规范")
-                //文档描述
-                .description("接口说明")
-                //服务条款URL
-                //.termsOfServiceUrl("http://localhost:8081/doc.html")
-                //版本号
-                .version("1.0.0")
+                .title("swagger-bootstrap-ui很棒~~~！！！")
+                .description("<div style='font-size:14px;color:red;'>swagger-bootstrap-ui-demo RESTful APIs</div>")
+                .termsOfServiceUrl("http://www.group.com/")
+                .contact("group@qq.com")
+                .version("1.0")
                 .build();
     }
+
     /**
      * 添加head参数配置
+     * @return
      */
     private List<Parameter> getParameterList() {
         ParameterBuilder clientIdTicket = new ParameterBuilder();

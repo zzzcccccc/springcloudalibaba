@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
-            <artifactId>cloud-api-auth</artifactId>
+            <artifactId>cloud-common-swagger</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!--  nacos服务配置发现      -->

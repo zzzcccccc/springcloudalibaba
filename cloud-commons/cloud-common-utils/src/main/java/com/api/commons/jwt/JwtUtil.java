@@ -1,9 +1,6 @@
 package com.api.commons.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -94,20 +91,36 @@ public class JwtUtil {
         return key;
     }
 
-    /**
-     * 解析
-     *
-     * @param jwt
-     * @return
-     * @throws Exception
-     */
-    public static Claims parseJWT(String jwt) throws Exception {
+//    /**
+//     * 解析
+//     *
+//     * @param jwt
+//     * @return
+//     * @throws Exception
+//     */
+//    public static Claims parseJWT(String jwt) throws Exception {
+//        SecretKey secretKey = generalKey();
+//        return Jwts.parser()
+//                .setSigningKey(secretKey)
+//                .parseClaimsJws(jwt)
+//                .getBody();
+//    }
+
+    //不管是否过期，都返回claims对象
+    public static Claims parseJWT(String jwt){
         SecretKey secretKey = generalKey();
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(jwt)
-                .getBody();
+        Claims claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(secretKey) // 设置标识名
+                    .parseClaimsJws(jwt)  //解析token
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            claims = e.getClaims();
+        }
+        return claims;
     }
+
 
 
 }

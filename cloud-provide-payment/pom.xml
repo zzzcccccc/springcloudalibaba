@@ -51,7 +51,7 @@
             <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
-        <!--   检测系统的健康情况、当前的Beans、系统的缓存等  -->
+        <!--   检测系统的健康情况、当前的Beans、系统的缓存等(配合yml内的设置)  -->
 <!--   默认情况下，通过web端只可访问http://localhost:8080/actuator/health   -->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
