@@ -37,11 +37,9 @@ spring:
             allowed-methods:
               - GET
               - POST
-              - OPTIONS
               - DELETE
               - PUT
-              - HEAD
-              - PATCH
+              - OPTION
   # 当前环境对应的profile
   profiles:
     active: dev

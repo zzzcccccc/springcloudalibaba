@@ -1,6 +1,7 @@
 package com.cloud.auth.service;
 
-import com.cloud.auth.utils.JwtUtil;
+
+import com.api.commons.jwt.JwtUtil;
 import com.api.commons.result.RES;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.auth.domain.LoginUser;
@@ -48,6 +49,7 @@ public class LoginServiceImpl  extends ServiceImpl<LoginMapper, SysUser>  implem
         }
 
         // 如果认证通过了，使用userid生成一个jwt jwt存入ResponseResult返回
+        //1.1.1 可优化携带短标识给前端，jwt数据存入redis，避免因token太长而占用太多的带宽
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String id = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(id);

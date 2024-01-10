@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 //@Order(99) //解决跳转/login页面失败问题
-public class SecurityConfig  extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    @Autowired
 //    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
@@ -30,12 +30,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
      * @return
      */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 //关闭csrf
                 .csrf().disable()
@@ -44,23 +45,22 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
-//                .antMatchers("/auth/login").anonymous()
-                .antMatchers( "/auth/login",
-                        "/doc.html",
+                .antMatchers("/auth/login").anonymous()
+                .antMatchers("/auth/logout").anonymous()
+                .antMatchers("/doc.html",
                         "/v2/**",//此请求不放开会导致 error api-docs无法正常显示  https://songzixian.com/javalog/905.html
                         "/swagger-ui**",
                         "/swagger-ui/**",//此请求不放开没有权限请求一直失败，处于轮询接口
                         "/swagger-resources/**",//此请求不放开导致访问出现Unable to infer base url. This is common when using dynamic servlet registration or when the API is   https://blog.csdn.net/just_now_and_future/article/details/89343680
                         "/webjars/**"
-                ).anonymous()
+                ).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
-//        // 在过滤器UsernamePasswordAuthenticationFilter之前，添加我们自定义的过滤器JwtAuthenticationTokenFilter
+        // 在过滤器UsernamePasswordAuthenticationFilter之前，添加我们自定义的过滤器JwtAuthenticationTokenFilter
 //        http.addFilterBefore(jwtAuthenticationTokenFilter,
 //                UsernamePasswordAuthenticationFilter.class);
-
-
     }
+
 
     @Bean
     @Override
