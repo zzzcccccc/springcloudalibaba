@@ -14,7 +14,14 @@ import java.util.UUID;
 public class JwtUtil {
 
     //有效期为
-    public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
+    //public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
+    public static final Long JWT_TTL = 60 *1000L;// 60 * 60 *1000  一个小时
+
+    //定义允许刷新JWT的有效时长(在这个时间范围内，用户的JWT过期了，不需要重新登录，
+    // 后台会给一个新的JWT给前端，这个叫Token的刷新机制后面会着重介绍它的意义。)
+    public static final Long ALLOW_EXPIRES_TIME =  30 *1000L; //  允许过期时间(毫秒) 30分钟
+
+
     //设置秘钥明文
     public static final String JWT_KEY = "sangeng";
 

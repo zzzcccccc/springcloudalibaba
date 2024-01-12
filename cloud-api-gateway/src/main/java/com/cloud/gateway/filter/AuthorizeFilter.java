@@ -6,6 +6,7 @@ import com.api.commons.exception.ExceptionEnum;
 import com.api.commons.jwt.JwtUtil;
 import com.cloud.gateway.utils.RedisCache;
 import io.jsonwebtoken.Claims;
+import javafx.scene.SubScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -37,6 +38,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+
         //1.获取请求对象和响应对象
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
@@ -74,15 +76,24 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         try {
             Claims claims = JwtUtil.parseJWT(jwtToken);
             Date expiration = claims.getExpiration();  //解决token过期
+            Date issuedAt = claims.getIssuedAt();
             //和当前时间进行对比来判断是否过期
             boolean after = new Date(System.currentTimeMillis()).after(expiration);
+            id = claims.getSubject();
             if (after){
                //token过期
                 System.out.println("-----token过期----");
-                return response.writeWith(Mono.just(buffer));
+                //如果当前时间减去JWT过期的时间，大于允许过期时间，说明不允许重新申请了，就得重新登录了，此时返回null，
+                // 否则就是可以重新申请，开始在后台重新生成新的JWT。(30分钟)
+                if ((System.currentTimeMillis()-expiration.getTime())>JwtUtil.ALLOW_EXPIRES_TIME) {
+                    return response.writeWith(Mono.just(buffer));
+                }else{
+                    //生成新token，存到header中返回给前端
+                    String jwt = JwtUtil.createJWT(id);
+                    response.getHeaders().add("token", jwt);
+                }
             }
 
-            id = claims.getSubject();
             // 从redis中获取用户信息
             String redisKey = "login:"+id;
             Object loginUser = redisCache.getCacheObject(redisKey);

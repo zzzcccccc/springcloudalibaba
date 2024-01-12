@@ -1,6 +1,6 @@
 package com.cloud.auth.config;
 
-//import com.cloud.auth.filter.JwtAuthenticationTokenFilter;
+import com.cloud.auth.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //@Order(99) //解决跳转/login页面失败问题
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     /**
      * 加密
@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 在过滤器UsernamePasswordAuthenticationFilter之前，添加我们自定义的过滤器JwtAuthenticationTokenFilter
 //        http.addFilterBefore(jwtAuthenticationTokenFilter,
 //                UsernamePasswordAuthenticationFilter.class);
+
     }
 
 

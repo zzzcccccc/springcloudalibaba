@@ -11,7 +11,7 @@ public enum ExceptionEnum implements BaseErrorInfoInterface{
     // 数据操作错误定义
     SUCCESS(0, "成功!"),
     BODY_NOT_MATCH(4000,"请求参数返回空指针错误!"),
-    SIGNATURE_NOT_MATCH(4001,"token非法!"),
+    SIGNATURE_NOT_MATCH(4001,"token错误或过期!"),
     NOT_FOUND(4004, "未找到该资源!"),
     NOT_PERMISSION(4003, "无权限!"),
 
